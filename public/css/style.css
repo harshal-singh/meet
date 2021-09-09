@@ -1,0 +1,647 @@
+@import url("https://fonts.googleapis.com/css2?family=Oleo+Script&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap");
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #333333;
+    --secondary: #4f4f4f;
+    --ternary: #828282;
+    --white: #f2f2f2;
+    --danger: #eb5757;
+    --blue: #2f80ed;
+}
+
+body {
+    scroll-behavior: smooth;
+    color: var(--white);
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--primary);
+    font-family: "Open Sans", sans-serif;
+    user-select: none;
+}
+
+/* ---------- nav ---------- */
+nav {
+    width: 100%;
+    z-index: 3;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 35px 70px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+#logo {
+    max-width: fit-content;
+    display: flex;
+    align-items: center;
+    font-size: 21px;
+    color: var(--white);
+    font-family: "Oleo Script", cursive;
+}
+
+#logo button {
+    width: 38px;
+    height: 38px;
+    margin-right: 12px;
+    margin-bottom: 4px;
+    background-color: var(--blue);
+}
+
+/* ---------- main ---------- */
+main {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 120px 60px 30px 60px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+/* button */
+button {
+    cursor: pointer;
+    border: 0;
+    outline: 0;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-family: "Open Sans", sans-serif;
+    filter: brightness(1);
+    transition: filter 150ms ease;
+}
+
+button:hover {
+    filter: brightness(0.9);
+}
+
+/* input */
+input {
+    color: var(--white);
+    outline: none;
+    font-size: 16px;
+    font-weight: 600;
+    width: 240px;
+    height: 44px;
+    padding: 0 20px;
+    border-radius: 4px;
+    border: 2px solid var(--secondary);
+    background-color: transparent;
+    font-family: "Open Sans", sans-serif;
+}
+
+/* ---------- video grid ---------- */
+#videos-grid {
+    width: 100%;
+    height: 520px;
+    display: grid;
+    overflow-y: scroll;
+    grid-template-columns: repeat(3, calc(100vw / 3.8));
+    grid-template-rows: repeat(4, 248px);
+    grid-gap: 20px;
+    padding-right: 16px;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    border-radius: 4px;
+    /* background: var(--primary); */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: var(--secondary);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--ternary);
+}
+
+/* ---------- video ---------- */
+.video {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    border: 2px solid var(--white);
+    background-color: var(--secondary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.username {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: 14px;
+    padding: 2px 12px;
+    text-transform: capitalize;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    background-color: var(--primary);
+}
+
+.video p {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    transform: rotateY(180deg);
+    background-color: var(--secondary);
+}
+
+/* my controls */
+.my-controls {
+    z-index: 2;
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+}
+
+.my-controls button {
+    background-color: var(--danger);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+/* active button */
+.my-controls button.active {
+    background-color: var(--secondary);
+}
+
+.my-controls button:nth-of-type(even) {
+    margin: 0 20px;
+}
+
+.material-icons {
+    font-size: 21px !important;
+    color: var(--white);
+}
+
+/* options */
+#options {
+    position: fixed;
+    top: 120px;
+    right: 60px;
+    display: flex;
+    flex-direction: column;
+}
+
+#options button {
+    position: relative;
+    margin: 12px 0;
+    background-color: var(--secondary);
+}
+
+#options button.tooltip::after {
+    position: absolute;
+    content: "";
+    width: 8px;
+    height: 8px;
+    top: 50%;
+    right: 54px;
+    transform: rotate(45deg) translateX(-50%);
+    background-color: var(--blue);
+}
+
+#code.tooltip::before {
+    color: var(--white);
+    font-size: 12px;
+    right: 60px;
+    position: absolute;
+    content: "MEET CODE";
+    padding: 6px 10px;
+    background-color: var(--blue);
+    font-family: "Open Sans", sans-serif;
+}
+
+#link.tooltip::before {
+    color: var(--white);
+    font-size: 12px;
+    right: 60px;
+    position: absolute;
+    content: "MEET LINK";
+    padding: 6px 10px;
+    background-color: var(--blue);
+    font-family: "Open Sans", sans-serif;
+}
+
+#people.tooltip::before {
+    color: var(--white);
+    font-size: 12px;
+    right: 60px;
+    position: absolute;
+    content: "PEOPLE";
+    padding: 6px 10px;
+    background-color: var(--blue);
+    font-family: "Open Sans", sans-serif;
+}
+
+#chat_bubble.tooltip::before {
+    color: var(--white);
+    font-size: 12px;
+    right: 60px;
+    position: absolute;
+    content: "CHAT";
+    padding: 6px 10px;
+    background-color: var(--blue);
+    font-family: "Open Sans", sans-serif;
+}
+
+/* footer */
+footer {
+    z-index: 1;
+    width: 100%;
+    color: var(--ternary);
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    padding: 40px 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    background-color: var(--primary);
+}
+
+#overlay div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 20px;
+}
+
+#preview-stream {
+    width: 640px;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 8px;
+    background-color: var(--secondary);
+}
+
+#overlay form {
+    display: flex;
+    align-items: center;
+    margin-top: 48px;
+}
+
+#join-meet {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    width: 148px;
+    padding: 0 20px;
+    margin-left: 20px;
+    border-radius: 4px;
+    background-color: var(--blue);
+}
+
+#popup-layer {
+    z-index: 4;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#popup-msg {
+    color: var(--primary);
+    font-weight: bold;
+    text-align: center;
+    display: grid;
+    place-items: center;
+    width: 360px;
+    height: 200px;
+    border-radius: 8px;
+    background-color: var(--white);
+}
+
+#participant {
+    color: var(--primary);
+    position: fixed;
+    top: 60px;
+    right: -345px;
+    width: 345px;
+    height: 80vh;
+    padding: 24px 20px;
+    border-radius: 8px;
+    background-color: var(--white);
+    transition: all 500ms ease;
+    overflow-y: hidden;
+}
+
+#participant h4 {
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--secondary);
+}
+
+#participant-list {
+    height: 89%;
+    overflow-y: scroll;
+}
+
+#participant-list p {
+    padding: 9px 12px;
+    margin-right: 12px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+    color: var(--white);
+    text-transform: capitalize;
+    background-color: var(--primary);
+}
+
+#chat-area {
+    color: var(--primary);
+    position: fixed;
+    top: 60px;
+    right: -345px;
+    width: 345px;
+    height: 80vh;
+    padding: 24px 20px;
+    border-radius: 8px;
+    background-color: var(--white);
+    transition: all 500ms ease;
+    overflow-y: hidden;
+}
+
+#chat-area h4 {
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid var(--secondary);
+}
+
+#chats {
+    height: 80%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-bottom: 2px solid var(--secondary);
+}
+
+#chats small {
+    font-size: 12px;
+    margin-bottom: 4px;
+    color: var(--ternary);
+    text-transform: capitalize;
+    display: inline-block;
+}
+
+#chats p {
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: var(--white);
+    max-width: 256px;
+}
+
+.incoming {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.incoming p {
+    background-color: var(--primary);
+}
+
+.incoming-error {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+
+.incoming-error p {
+    background-color: var(--danger);
+}
+
+.outgoing {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    margin: 0 12px 24px 0;
+}
+
+.outgoing p {
+    background-color: var(--blue);
+}
+
+#chat-area form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5%;
+}
+
+#chat-msg {
+    color: var(--primary);
+    padding: 0 12px;
+    width: 254px;
+}
+
+#send-msg {
+    border-radius: 8px;
+    background-color: var(--blue);
+}
+
+@media (max-width: 992px) {
+    /* width */
+    ::-webkit-scrollbar {
+        width: 0;
+    }
+
+    nav,
+    main,
+    footer {
+        width: 100vw;
+        padding: 20px;
+    }
+
+    #logo {
+        font-size: 18px;
+    }
+
+    #logo button {
+        width: 34px;
+        height: 34px;
+        margin-right: 8px;
+        padding: 1px 0 0 2px;
+        font-size: 18px !important;
+        display: grid !important;
+    }
+
+    main {
+        padding: 0;
+        flex-direction: column;
+    }
+
+    section {
+        width: 100%;
+        display: grid;
+        place-items: center;
+    }
+
+    input,
+    #join-meet {
+        margin-left: 0;
+        width: 90vw !important;
+        height: 40px !important;
+        font-size: 14px !important;
+        padding: 0 12px !important;
+    }
+
+    footer {
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    footer small:nth-child(1) {
+        margin-bottom: 12px;
+    }
+
+    /* meet */
+    #preview-stream {
+        width: 90vw;
+        height: 40vh;
+        border-radius: 5px;
+    }
+
+    #overlay div {
+        padding-bottom: 88px;
+    }
+
+    #overlay form {
+        margin-top: 36px;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    #join-meet {
+        margin-top: 28px;
+    }
+
+    .my-controls {
+        bottom: 100px;
+    }
+
+    #videos-grid {
+        width: 90vw;
+        height: 70vh;
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+        grid-gap: unset;
+        grid-row-gap: 16px;
+        padding-right: 0;
+        padding-left: 0;
+        margin-top: 80px;
+    }
+
+    .video {
+        height: 218px;
+    }
+
+    #options {
+        padding: 8px;
+        top: unset;
+        right: -80px;
+        bottom: 112px;
+        border-radius: 5px;
+        background-color: var(--white);
+        transition: all 500ms ease;
+    }
+
+    #more {
+        background-color: var(--secondary);
+    }
+
+    #popup-msg {
+        width: 80%;
+        height: 175px;
+    }
+
+    #chat-area,
+    #participant {
+        padding: 32px ​20px;
+        z-index: 3;
+        top: 0;
+        right: -110vw;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        display: unset;
+    }
+
+    #participant h4 {
+        width: 100%;
+    }
+
+    #participant-list {
+        width: 100%;
+    }
+
+    #participant-list p {
+        margin-right: 0;
+    }
+
+    #close-chat-area,
+    #close-participant {
+        position: absolute;
+        top: 20px;
+        right: 24px;
+        width: 28px;
+        height: 28px;
+        background: var(--danger);
+    }
+
+    #send-msg {
+        height: 40px;
+        width: 40px;
+        font-size: 18px !important;
+        border-radius: 4px !important;
+    }
+
+    #chat-msg {
+        width: 77vw !important;
+    }
+}

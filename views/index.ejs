@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Meet</title>
+        <link rel="stylesheet" href="/css/style.css" />
+        <link rel="stylesheet" href="/css/index.css" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <link rel="shortcut icon" href="/icons/favicon.png" type="image/x-icon" />
+    </head>
+    <body>
+        <main>
+            <nav>
+                <a id="logo" href="/">
+                    <button class="material-icons">videocam</button>
+                    <span>Meet</span>
+                </a>
+            </nav>
+            <section>
+                <div id="text">
+                    <h1>
+                        Creating your own <br />
+                        virtual meeting room
+                    </h1>
+                    <p>
+                        You can generate an invite link by clicking on new meet <br />
+                        and share that link with people you want to meet.
+                    </p>
+                    <div id="new-meet-controls">
+                        <button id="new-meet">
+                            <span class="material-icons"> video_call </span>
+                            New Meet
+                        </button>
+                        <input type="text" id="code-link" placeholder="Enter meet code or link" />
+                    </div>
+                    <p id="error">No meet found with this id!</p>
+                    <button id="join" disabled>Join</button>
+                </div>
+            </section>
+            <section id="right-section">
+                <div>
+                    <img src="/images/meeting.svg" alt="meeting animated svg" />
+                    <a href="https://storyset.com/work" target="_blank" rel="noopener noreferrer">
+                        Work illustrations by Storyset
+                    </a>
+                </div>
+            </section>
+            <footer>
+                <small>Copyright © 2021 Meet.</small>
+                <small>Designed & Developed by Harshal Singh.</small>
+            </footer>
+        </main>
+
+        <!-- script -->
+        <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script>
+        <script src="/socket.io/socket.io.js" defer></script>
+        <script src="/js/script.js" defer></script>
+    </body>
+</html>
