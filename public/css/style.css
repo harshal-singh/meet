@@ -471,7 +471,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 5%;
+    margin: 5% 0;
 }
 
 #chat-msg {
@@ -543,8 +543,13 @@ footer {
     /* meet */
     #preview-stream {
         width: 90vw;
-        height: 288px;
+        height: 80vw;
         border-radius: 5px;
+    }
+
+    #overlay div {
+        position: fixed;
+        top: 25vw;
     }
 
     #overlay form {
@@ -559,6 +564,8 @@ footer {
 
     .my-controls {
         position: fixed;
+        top: 156vw;
+        bottom: unset;
     }
 
     #videos-grid {
