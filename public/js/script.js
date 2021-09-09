@@ -18,6 +18,7 @@ if (location.pathname == "/") {
     btnNewMeet.onclick = () => {
         window.location.href = "meet";
     };
+
     // meet code/link
     codeLinkInput.oninput = () => {
         if (codeLinkInput.value == "") {
@@ -40,8 +41,13 @@ if (location.pathname == "/") {
 
     // join meet
     btnJoin.onclick = () => {
-        const code = codeLinkInput.value;
+        let code = codeLinkInput.value;
         if (code !== "") {
+            if (isUrl(code)) {
+                const url = new URL(code);
+                code = url.pathname.split("/")[2];
+            }
+
             // read data from file
             fetch(`../data/meet-${code}.json`)
                 .then((data) => {
@@ -66,6 +72,14 @@ if (location.pathname == "/") {
                 });
         } else {
             codeLinkInput.style.borderColor = "#eb5757";
+        }
+    };
+
+    const isUrl = (string) => {
+        try {
+            return Boolean(new URL(string));
+        } catch (e) {
+            return false;
         }
     };
 }
@@ -162,6 +176,7 @@ else {
     btnPeople.onclick = () => {
         participantList.innerHTML = "";
         if (participantOff) {
+            btnPeople.classList.remove("new");
             // get all user
             fetch(`../data/meet-${ROOM_ID}.json`)
                 .then((data) => {
@@ -193,6 +208,7 @@ else {
     // chat participant
     btnChat.onclick = () => {
         if (chatOff) {
+            btnChat.classList.remove("new");
             chatMsgInput.focus();
             chatArea.style.right = window.innerWidth < 922 ? "0" : "125px";
             chatOff = false;
@@ -245,7 +261,13 @@ else {
                         </div>`;
         }
         chats.insertAdjacentHTML("beforeend", msgHTML);
+        btnChat.classList.add("new");
         scrollToBottom();
+
+        if (window.innerWidth < 992) {
+            const btnMore = document.getElementById("more");
+            btnMore.classList.add("new");
+        }
     });
 
     const scrollToBottom = () => {
@@ -261,4 +283,10 @@ else {
     }
 
     document.querySelector("footer").style.display = "none";
+
+    // prevent from back click in browser
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };
 }

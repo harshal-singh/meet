@@ -89,6 +89,13 @@ getUserMedia
         //  on new user connected
         socket.on("user-connected", (userId, username) => {
             connectToNewUser(userId, username, myVideoStream);
+            const btnPeople = document.getElementById("people");
+            btnPeople.classList.add("new");
+
+            if (window.innerWidth < 992) {
+                const btnMore = document.getElementById("more");
+                btnMore.classList.add("new");
+            }
         });
 
         //  on user disconnected
@@ -141,6 +148,7 @@ peer.on("open", (autoPeerId) => {
 
                 btnMore.onclick = () => {
                     if (optionsOff) {
+                        btnMore.classList.remove("new");
                         btnMore.innerText = "expand_less";
                         options.style.right = "20px";
                         optionsOff = false;
