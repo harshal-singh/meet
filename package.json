@@ -1,14 +1,20 @@
 {
     "name": "meet",
     "version": "1.0.0",
-    "description": "",
+    "description": "Meet (Our Meet) is a web video conferencing service. Allows users in different locations to hold real-time face-to-face meetings, for free of cost. There are many ways to utilize Meet (Our Meet) video conferencing, such as company meetings, job training sessions, or addressing board members.",
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
         "dev": "nodemon server.js"
     },
-    "keywords": [],
-    "author": "",
+    "keywords": [
+        "Meet",
+        "Video Call",
+        "Video Conferencing",
+        "Online Meet",
+        "Meeting"
+    ],
+    "author": "Harshal Singh",
     "license": "ISC",
     "dependencies": {
         "ejs": "^3.1.6",
