@@ -259,4 +259,6 @@ else {
         const closeChatArea = `<button id="close-chat-area" class="material-icons">close</button>`;
         chatArea.insertAdjacentHTML("beforeend", closeChatArea);
     }
+
+    document.querySelector("footer").style.display = "none";
 }

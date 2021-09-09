@@ -130,7 +130,6 @@ peer.on("open", (autoPeerId) => {
             addVideoStream("myId", "You", myVideo, myVideoStream);
 
             if (window.innerWidth < 992) {
-                document.querySelector("footer").style.display = "none";
                 const myControls = document.querySelector(".my-controls");
                 myControls.style.bottom = "36px";
                 const btnMoreHTML = `<button id="more" class="material-icons">expand_more</button>`;

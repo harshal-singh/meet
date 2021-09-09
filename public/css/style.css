@@ -543,12 +543,8 @@ footer {
     /* meet */
     #preview-stream {
         width: 90vw;
-        height: 40vh;
+        height: 288px;
         border-radius: 5px;
-    }
-
-    #overlay div {
-        padding-bottom: 88px;
     }
 
     #overlay form {
@@ -562,7 +558,7 @@ footer {
     }
 
     .my-controls {
-        bottom: 100px;
+        position: fixed;
     }
 
     #videos-grid {
