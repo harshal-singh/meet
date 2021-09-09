@@ -412,7 +412,7 @@ footer {
 }
 
 #chats {
-    height: 80%;
+    height: 75%;
     overflow-y: scroll;
     overflow-x: hidden;
     border-bottom: 2px solid var(--secondary);
@@ -550,6 +550,8 @@ footer {
     #overlay div {
         position: fixed;
         top: 25vw;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #overlay form {
