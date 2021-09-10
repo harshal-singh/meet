@@ -33,7 +33,7 @@ io.on("connection", (socket) => {
 
         // send msg
         socket.on("send-msg", (roomId, { userId: id, msg }) => {
-            const data = JSON.parse(fs.readFileSync(`${__dirname}/data/meet-${roomId}.json`));
+            const data = JSON.parse(fs.readFileSync(`./data/meet-${roomId}.json`));
 
             if (data) {
                 const user = data.find((obj) => obj.userId === id);
@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
             socket.to(roomId).emit("user-disconnected", userId);
         });
 
-        fs.readFile(`${__dirname}/data/meet-${roomId}.json`, (err, data) => {
+        fs.readFile(`./data/meet-${roomId}.json`, (err, data) => {
             let meetServerData, meetClientData;
             if (err) {
                 // admin user for meet
@@ -66,17 +66,17 @@ io.on("connection", (socket) => {
                 meetServerData.push(serverObj);
 
                 const clientObj = { userId, role: "participant", name: userData["username"] };
-                meetClientData = JSON.parse(fs.readFileSync(`${__dirname}/public/data/meet-${roomId}.json`));
+                meetClientData = JSON.parse(fs.readFileSync(`./public/data/meet-${roomId}.json`));
                 meetClientData.push(clientObj);
             }
             // write data in server file
-            fs.writeFileSync(`${__dirname}/data/meet-${roomId}.json`, JSON.stringify(meetServerData), (err) => {
+            fs.writeFileSync(`./data/meet-${roomId}.json`, JSON.stringify(meetServerData), (err) => {
                 if (err) {
                     console.log(err);
                 }
             });
             // write data in client file
-            fs.writeFileSync(`${__dirname}/public/data/meet-${roomId}.json`, JSON.stringify(meetClientData), (err) => {
+            fs.writeFileSync(`./public/data/meet-${roomId}.json`, JSON.stringify(meetClientData), (err) => {
                 if (err) {
                     console.log(err);
                 }
