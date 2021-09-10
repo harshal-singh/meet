@@ -70,13 +70,13 @@ io.on("connection", (socket) => {
                 meetClientData.push(clientObj);
             }
             // write data in server file
-            fs.writeFile(`${__dirname}/data/meet-${roomId}.json`, JSON.stringify(meetServerData), (err) => {
+            fs.writeFileSync(`${__dirname}/data/meet-${roomId}.json`, JSON.stringify(meetServerData), (err) => {
                 if (err) {
                     console.log(err);
                 }
             });
             // write data in client file
-            fs.writeFile(`${__dirname}/public/data/meet-${roomId}.json`, JSON.stringify(meetClientData), (err) => {
+            fs.writeFileSync(`${__dirname}/public/data/meet-${roomId}.json`, JSON.stringify(meetClientData), (err) => {
                 if (err) {
                     console.log(err);
                 }
