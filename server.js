@@ -59,19 +59,6 @@ io.on("connection", (socket) => {
                 // admin user for meet
                 meetServerData = [{ userId, role: "host", userData }];
                 meetClientData = [{ userId, role: "host", name: userData["username"] }];
-
-                // write data in server file
-                fs.writeFile(`${__dirname}/data/meet-${roomId}.json`, JSON.stringify(meetServerData), (err) => {
-                    if (err) {
-                        console.log("Admin server", err);
-                    }
-                });
-                // write data in client file
-                fs.writeFile(`${__dirname}/public/data/meet-${roomId}.json`, JSON.stringify(meetClientData), (err) => {
-                    if (err) {
-                        console.log("Admin client", err);
-                    }
-                });
             } else {
                 //  add new user to meet
                 const serverObj = { userId, role: "participant", userData };
@@ -81,20 +68,20 @@ io.on("connection", (socket) => {
                 const clientObj = { userId, role: "participant", name: userData["username"] };
                 meetClientData = JSON.parse(fs.readFileSync(`${__dirname}/public/data/meet-${roomId}.json`));
                 meetClientData.push(clientObj);
-
-                // write data in server file
-                fs.writeFile(`${__dirname}/data/meet-${roomId}.json`, JSON.stringify(meetServerData), (err) => {
-                    if (err) {
-                        console.log("User server", err);
-                    }
-                });
-                // write data in client file
-                fs.writeFile(`${__dirname}/public/data/meet-${roomId}.json`, JSON.stringify(meetClientData), (err) => {
-                    if (err) {
-                        console.log("User client", err);
-                    }
-                });
             }
+
+            // write data in server file
+            fs.writeFile(`${__dirname}/data/meet-${roomId}.json`, JSON.stringify(meetServerData), (err) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
+            // write data in client file
+            fs.writeFile(`${__dirname}/public/data/meet-${roomId}.json`, JSON.stringify(meetClientData), (err) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
         });
     });
 });
