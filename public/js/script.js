@@ -49,7 +49,7 @@ if (location.pathname == "/") {
             }
 
             // read data from file
-            fetch(`./data/meet-${code}.json`)
+            fetch(`../data/meet-${code}.json`)
                 .then((data) => {
                     return data.json();
                 })
@@ -178,7 +178,7 @@ else {
         if (participantOff) {
             btnPeople.classList.remove("new");
             // get all user
-            fetch(`./data/meet-${ROOM_ID}.json`)
+            fetch(`../data/meet-${ROOM_ID}.json`)
                 .then((data) => {
                     return data.json();
                 })
