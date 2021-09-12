@@ -49,7 +49,7 @@ if (location.pathname == "/") {
             }
 
             // read data from file
-            fetch(`../data/meet-${code}.json`)
+            fetch(`./../data/meet-${code}.json`)
                 .then((data) => {
                     return data.json();
                 })
@@ -178,13 +178,13 @@ else {
         if (participantOff) {
             btnPeople.classList.remove("new");
             // get all user
-            fetch(`../data/meet-${ROOM_ID}.json`)
+            fetch(`./../data/meet-${ROOM_ID}.json`)
                 .then((data) => {
                     return data.json();
                 })
                 .then((arr) => {
                     arr.forEach((obj) => {
-                        const html = `<p>${obj.name}</p>`;
+                        const html = `<p>${obj.username}</p>`;
                         participantList.insertAdjacentHTML("beforeend", html);
                     });
                 })

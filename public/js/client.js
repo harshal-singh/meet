@@ -62,13 +62,13 @@ getUserMedia
             const video = document.createElement("video");
             call.on("stream", (userVideoStream) => {
                 // read data from file
-                const findUsername = fetch(`../data/meet-${ROOM_ID}.json`)
+                const findUsername = fetch(`./../data/meet-${ROOM_ID}.json`)
                     .then((data) => {
                         return data.json();
                     })
                     .then((arr) => {
                         const user = arr.find((obj) => obj.userId === call.peer);
-                        return user["name"];
+                        return user["username"];
                     })
                     .catch((err) => {
                         console.warn(err);
@@ -120,20 +120,13 @@ peer.on("open", (autoPeerId) => {
         e.preventDefault();
 
         const username = usernameInput.value;
-        const userData = {
-            username,
-            vendor: navigator.vendor,
-            platform: navigator.platform,
-            language: navigator.language,
-            userAgent: navigator.userAgent,
-        };
         // check value
         if (username !== "") {
             usernameInput.style.borderColor = "#2f80ed";
             overlay.remove();
             localStorage.setItem("_user", autoPeerId);
 
-            socket.emit("join-room", ROOM_ID, autoPeerId, userData);
+            socket.emit("join-room", ROOM_ID, autoPeerId, username);
             addVideoStream("myId", "You", myVideo, myVideoStream);
 
             if (window.innerWidth < 992) {

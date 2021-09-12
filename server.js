@@ -4,6 +4,9 @@ const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const { v4: uuidV4 } = require("uuid");
 const fs = require("fs");
+const { rejects } = require("assert");
+const { resolve } = require("path");
+const { json } = require("express");
 
 // setting view engine
 app.set("view engine", "ejs");
@@ -25,19 +28,49 @@ app.get("/meet/:room", (req, res) => {
     res.render("meet", { roomId: req.params.room });
 });
 
+// read file
+const readFilePro = (file) => {
+    return new Promise((resolve, rejects) => {
+        fs.readFile(file, (err, data) => {
+            let status, obj;
+            if (err) {
+                status = "fail";
+                obj = err;
+            } else {
+                status = "success";
+                obj = JSON.parse(data);
+            }
+            resolve({ status, obj });
+        });
+    });
+};
+
+// write file
+const writeFilePro = (file, data) => {
+    return new Promise((resolve, rejects) => {
+        fs.writeFile(file, JSON.stringify(data), (err) => {
+            if (err) {
+                rejects(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+};
+
 // socket connection
 io.on("connection", (socket) => {
-    socket.on("join-room", (roomId, userId, userData) => {
+    socket.on("join-room", (roomId, userId, username) => {
         socket.join(roomId);
-        socket.to(roomId).emit("user-connected", userId, userData.username);
+        socket.to(roomId).emit("user-connected", userId, username);
 
         // send msg
         socket.on("send-msg", (roomId, { userId: id, msg }) => {
-            const data = JSON.parse(fs.readFileSync(`${__dirname}/data/meet-${roomId}.json`));
+            const data = JSON.parse(fs.readFileSync(`${__dirname}/public/data/meet-${roomId}.json`));
 
             if (data) {
                 const user = data.find((obj) => obj.userId === id);
-                const username = user["userData"].username;
+                const username = user["username"];
                 socket.to(roomId).emit("receive-msg", { status: "success", username, msg });
             } else {
                 socket.to(roomId).emit("receive-msg", {
@@ -53,36 +86,26 @@ io.on("connection", (socket) => {
             socket.to(roomId).emit("user-disconnected", userId);
         });
 
-        fs.readFile(`${__dirname}/data/meet-${roomId}.json`, (err, data) => {
-            let meetServerData, meetClientData;
-            if (err) {
-                // admin user for meet
-                meetServerData = [{ userId, role: "host", userData }];
-                meetClientData = [{ userId, role: "host", name: userData["username"] }];
-            } else {
-                //  add new user to meet
-                const serverObj = { userId, role: "participant", userData };
-                meetServerData = JSON.parse(data);
-                meetServerData.push(serverObj);
-
-                const clientObj = { userId, role: "participant", name: userData["username"] };
-                meetClientData = JSON.parse(fs.readFileSync(`${__dirname}/public/data/meet-${roomId}.json`));
-                meetClientData.push(clientObj);
-            }
-
-            // write data in server file
-            fs.writeFile(`${__dirname}/data/meet-${roomId}.json`, JSON.stringify(meetServerData), (err) => {
-                if (err) {
-                    console.log(err);
+        let meetServerData;
+        readFilePro(`${__dirname}/public/data/meet-${roomId}.json`)
+            .then(({ status, obj }) => {
+                if (status === "success") {
+                    //  add new user to meet
+                    const serverObj = { userId, role: "participant", username };
+                    meetServerData = obj;
+                    meetServerData.push(serverObj);
+                } else if (status === "fail") {
+                    // admin user for meet
+                    meetServerData = [{ userId, role: "host", username }];
                 }
+                return meetServerData;
+            })
+            .then((meetServerData) => {
+                writeFilePro(`${__dirname}/public/data/meet-${roomId}.json`, meetServerData);
+            })
+            .catch((err) => {
+                console.log(err);
             });
-            // write data in client file
-            fs.writeFile(`${__dirname}/public/data/meet-${roomId}.json`, JSON.stringify(meetClientData), (err) => {
-                if (err) {
-                    console.log(err);
-                }
-            });
-        });
     });
 });
 
