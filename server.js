@@ -12,6 +12,7 @@ const { json } = require("express");
 app.set("view engine", "ejs");
 // serving public file
 app.use(express.static("public"));
+app.use(express.static("data"));
 
 // home page
 app.get("/", (req, res) => {
@@ -66,7 +67,7 @@ io.on("connection", (socket) => {
 
         // send msg
         socket.on("send-msg", (roomId, { userId: id, msg }) => {
-            const data = JSON.parse(fs.readFileSync(`${__dirname}/public/data/meet-${roomId}.json`));
+            const data = JSON.parse(fs.readFileSync(`${__dirname}/data/meet-${roomId}.json`));
 
             if (data) {
                 const user = data.find((obj) => obj.userId === id);
@@ -87,7 +88,7 @@ io.on("connection", (socket) => {
         });
 
         let meetServerData;
-        readFilePro(`${__dirname}/public/data/meet-${roomId}.json`)
+        readFilePro(`${__dirname}/data/meet-${roomId}.json`)
             .then(({ status, obj }) => {
                 if (status === "success") {
                     //  add new user to meet
@@ -101,7 +102,7 @@ io.on("connection", (socket) => {
                 return meetServerData;
             })
             .then((meetServerData) => {
-                writeFilePro(`${__dirname}/public/data/meet-${roomId}.json`, meetServerData);
+                writeFilePro(`${__dirname}/data/meet-${roomId}.json`, meetServerData);
             })
             .catch((err) => {
                 console.log(err);
