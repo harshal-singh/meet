@@ -62,7 +62,7 @@ getUserMedia
             const video = document.createElement("video");
             call.on("stream", (userVideoStream) => {
                 // read data from file
-                const findUsername = fetch(`../data/meet-${ROOM_ID}.json`)
+                const findUsername = fetch(`./../data/meet-${ROOM_ID}.json`)
                     .then((data) => {
                         return data.json();
                     })
