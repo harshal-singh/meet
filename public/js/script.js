@@ -49,20 +49,19 @@ if (location.pathname == "/") {
             }
 
             // read data from file
-            fetch(`/meet-${code}.json`)
+            fetch(`/api/v1/user/${code}`)
                 .then((data) => {
                     return data.json();
                 })
-                .then((arr) => {
+                .then(({ status, users }) => {
                     error.style.display = "none";
 
-                    const user = arr.find((obj) => obj.role === "host");
-
-                    if (user) {
+                    if (status === "success" && users.length !== 0) {
                         codeLinkInput.value = "";
                         window.location.href = `meet/${code}`;
                     } else {
-                        alert("Something went wrong!");
+                        error.style.display = "block";
+                        codeLinkInput.style.borderColor = "#eb5757";
                     }
                 })
                 .catch((err) => {
@@ -178,13 +177,13 @@ else {
         if (participantOff) {
             btnPeople.classList.remove("new");
             // get all user
-            fetch(`/meet-${ROOM_ID}.json`)
+            fetch(`/api/v1/user/${ROOM_ID}`)
                 .then((data) => {
                     return data.json();
                 })
-                .then((arr) => {
-                    arr.forEach((obj) => {
-                        const html = `<p>${obj.username}</p>`;
+                .then(({ users }) => {
+                    users.forEach((user) => {
+                        const html = `<p>${user["name"]}</p>`;
                         participantList.insertAdjacentHTML("beforeend", html);
                     });
                 })
@@ -217,9 +216,11 @@ else {
                 participant.style.right = window.innerWidth < 922 ? "-110vw" : "-345px";
                 participantOff = true;
             }
+            document.removeEventListener("keydown", addKeyDownEvent);
         } else {
             chatArea.style.right = window.innerWidth < 922 ? "-110vw" : "-345px";
             chatOff = true;
+            document.addEventListener("keydown", addKeyDownEvent);
         }
     };
 

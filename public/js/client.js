@@ -61,26 +61,21 @@ getUserMedia
             let calledOnce = false;
             const video = document.createElement("video");
             call.on("stream", (userVideoStream) => {
-                // read data from file
-                const findUsername = fetch(`/meet-${ROOM_ID}.json`)
-                    .then((data) => {
-                        return data.json();
-                    })
-                    .then((arr) => {
-                        const user = arr.find((obj) => obj.userId === call.peer);
-                        return user["username"];
-                    })
-                    .catch((err) => {
-                        console.warn(err);
-                    });
+                const callId = call.peer;
 
-                async function getUsername() {
-                    const username = await findUsername;
-                    // add video
-                    addVideoStream(call.peer, username, video, userVideoStream);
-                }
+                // request username
                 if (!calledOnce) {
-                    getUsername();
+                    fetch(`/api/v1/user/${ROOM_ID}/${callId}`)
+                        .then((data) => {
+                            return data.json();
+                        })
+                        .then((obj) => {
+                            const username = obj.name;
+                            addVideoStream(callId, username, video, userVideoStream);
+                        })
+                        .catch((err) => {
+                            console.warn(err);
+                        });
                     calledOnce = true;
                 }
             });
@@ -124,6 +119,7 @@ peer.on("open", (autoPeerId) => {
         if (username !== "") {
             usernameInput.style.borderColor = "#2f80ed";
             overlay.remove();
+            document.addEventListener("keydown", addKeyDownEvent);
             localStorage.setItem("_user", autoPeerId);
 
             socket.emit("join-room", ROOM_ID, autoPeerId, username);
@@ -234,3 +230,15 @@ function playStop() {
         myVideoStream.getVideoTracks()[0].enabled = true;
     }
 }
+
+// add key down event
+let curKey, prevKey;
+const addKeyDownEvent = (e) => {
+    curKey = e.keyCode;
+    if (curKey == 17) {
+        prevKey = curKey;
+        e.preventDefault();
+    } else if ((prevKey == 17 && curKey == 82) || curKey == 116) {
+        e.preventDefault();
+    }
+};
