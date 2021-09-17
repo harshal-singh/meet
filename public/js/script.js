@@ -176,12 +176,14 @@ else {
         participantList.innerHTML = "";
         if (participantOff) {
             btnPeople.classList.remove("new");
+            participantList.textContent = "Loading participants...";
             // get all user
             fetch(`/api/v1/user/${ROOM_ID}`)
                 .then((data) => {
                     return data.json();
                 })
                 .then(({ users }) => {
+                    participantList.textContent = "";
                     users.forEach((user) => {
                         const html = `<p>${user["name"]}</p>`;
                         participantList.insertAdjacentHTML("beforeend", html);
@@ -262,12 +264,16 @@ else {
                         </div>`;
         }
         chats.insertAdjacentHTML("beforeend", msgHTML);
-        btnChat.classList.add("new");
+        if (chatOff) {
+            btnChat.classList.add("new");
+        }
         scrollToBottom();
 
         if (window.innerWidth < 992) {
             const btnMore = document.getElementById("more");
-            btnMore.classList.add("new");
+            if (optionsOff) {
+                btnMore.classList.add("new");
+            }
         }
     });
 
