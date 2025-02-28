@@ -16,18 +16,6 @@ variable "ami_id" {
   default     = "ami-00bb6a80f01f03502"  # Update as needed
 }
 
-variable "instance_types" {
-  description = "List of instance types for EC2 instances"
-  type        = list(string)
-  default     = ["t2.medium", "t2.large"]
-}
-
-variable "instance_names" {
-  description = "List of instance names"
-  type        = list(string)
-  default     = ["jenkins-server", "jenkins-agent"]
-}
-
 variable "eks_cluster_name" {
   description = "Name of the EKS cluster"
   type        = string

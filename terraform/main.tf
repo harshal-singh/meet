@@ -78,21 +78,6 @@ resource "aws_security_group" "default_sg" {
   }
 }
 
-resource "aws_instance" "meet_instance" {
-  count                   = 2
-  ami                     = var.ami_id
-  instance_type           = var.instance_types[count.index]
-  subnet_id               = aws_default_subnet.default_subnet_1.id
-  key_name                = var.ec2_ssh_key_name
-  vpc_security_group_ids  = [aws_security_group.default_sg.id]
-  associate_public_ip_address = true
-
-  tags = {
-    Name = var.instance_names[count.index]
-  }
-}
-
-
 resource "aws_iam_role" "eks_cluster_role" {
    name = "eks-cluster-role"
    assume_role_policy = jsonencode({
@@ -108,7 +93,6 @@ resource "aws_iam_role" "eks_cluster_role" {
      ]
    })
 }
-
 resource "aws_iam_role" "eks_node_role" {
   name = "eks-node-role"
   assume_role_policy = jsonencode({
