@@ -1,0 +1,111 @@
+- 
+  name: Install and configure Jenkins, Docker, AWS CLI, kubectl, SonarQube, and ArgoCD on GCP Master Node
+  hosts: gcp_master
+  become: yes
+  tasks:
+    - name: Update Apt Cache
+      apt:
+        update_cache: yes
+
+    - name: Install Java 17
+      apt:
+        name: openjdk-17-jdk-headless
+        state: present
+    
+    - name: Install Jenkins
+      get_url:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        dest: /usr/share/keyrings/jenkins-keyring.asc
+      
+    - name: Add Jenkins Repository
+      apt_repository:
+        repo: deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/
+        filename: jenkins.list
+        state: present
+
+    - name: Install Jenkins
+      apt:
+        name: jenkins
+        state: present
+        update_cache: yes
+
+    - name: Start Jenkins
+      service:
+        name: jenkins
+        state: started
+        enabled: yes
+    
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Ensure Docker socket is accessible
+      file:
+        path: /var/run/docker.sock
+        mode: '0777'
+        state: touch
+
+    - name: Install Docker Compose
+      apt:
+        name: docker-compose
+        state: present
+
+    - name: Install Dependencies for Gcloud CLI
+      apt:
+        name: 
+          - apt-transport-https
+          - ca-certificates
+          - gnupg
+          - curl
+        state: present
+
+    - name: Add Gcloud Repository
+      apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main"
+        filename: google-cloud-sdk.list
+        state: present
+
+    - name: Install Gcloud CLI
+      apt:
+        name: google-cloud-cli
+        state: present
+        update_cache: yes
+
+    - name: Configure gcloud CLI (Manual Step)
+      debug:
+        msg: "Run 'gcloud auth login' manually to set up GCP credentials."
+    
+    - name: Install Kubectl
+      apt:
+        name: kubectl
+        state: present
+        update_cache: yes
+
+    - name: Verify Kubectl Installation
+      command: kubectl version --client --short
+      register: kubectl_version
+      changed_when: false
+
+    - name: Display Kubectl version
+      debug:
+        var: kubectl_version.stdout
+
+    - name: Create SonarQube Container
+      docker_container:
+        name: sonarqube
+        image: sonarqube:lts-community
+        ports:
+          - "9000:9000"
+        state: started
+        restart_policy: always
+
+    - name: Download ArgoCD CLI
+      get_url:
+        url: https://github.com/argoproj/argo-cd/releases/download/v2.4.7/argocd-linux-amd64
+        dest: /usr/local/bin/argocd
+        mode: '0755'
+
+    - name: Print Complete Message
+      debug:
+        msg: "Jenkins, Docker, gcloud CLI, kubectl, SonarQube, and ArgoCD have been installed and configured on the GCP Master VM."
