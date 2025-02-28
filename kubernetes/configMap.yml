@@ -1,0 +1,7 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: meetapp-config
+  namespace: meetapp
+data:
+  LIVE_DB: mongodb://mongodb-svc:27017/meetapp
