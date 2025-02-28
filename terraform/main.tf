@@ -155,7 +155,7 @@ resource "aws_eks_node_group" "eks_node_group" {
     source_security_group_ids = [aws_security_group.default_sg.id]
   }
 
-  instance_types = [var.instance_types[0]]
+  instance_types = ["t2.medium"]
 
   tags = {
     Name = var.eks_node_group_name
