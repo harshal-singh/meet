@@ -1,5 +1,3 @@
-
-
 resource "aws_default_vpc" "default_vpc" {
 
 }
@@ -13,7 +11,7 @@ resource "aws_default_subnet" "default_subnet_2" {
 }
 
 resource "aws_security_group" "cluster_sg" {
-  name        = "default"
+  name        = "cluster-sg"
   description = "Security group for meet application"
   vpc_id      = aws_default_vpc.default_vpc.id
 
