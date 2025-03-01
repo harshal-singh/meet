@@ -32,7 +32,7 @@ pipeline {
         stage('OWASP: Dependency Check') {
             steps {
                 script {
-                    owaspDependencyCheck()
+                    owaspDependency()
                 }
             }
         }
