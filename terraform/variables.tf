@@ -28,6 +28,12 @@ variable "eks_node_group_name" {
   default     = "meet-node-group"
 }
 
+variable "eks_node_instance_type" {
+  description = "Instance type for the EKS node group"
+  type        = string
+  default     = "t2.small"
+}
+
 variable "eks_cluster_policy_arn" {
   description = "ARN of the EKS cluster policy"
   type        = string
@@ -45,5 +51,10 @@ variable "eks_cni_policy_arn" {
   description = "ARN of the EKS CNI policy"
   type        = string
   default     = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  
+}
+
+variable "eks_ecr_read_only_policy_arn" {
+  description = "ARN of the ECR read only policy"
+  type        = string
+  default     = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
