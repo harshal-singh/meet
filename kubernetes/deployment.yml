@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: meetapp
-          image: guravarchies/meetapp:latest
+          image: guravarchies/meet-app:latest
           ports:
             - containerPort: 5000
           env:
