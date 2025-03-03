@@ -31,7 +31,7 @@ variable "eks_node_group_name" {
 variable "eks_node_instance_type" {
   description = "Instance type for the EKS node group"
   type        = string
-  default     = "t2.small"
+  default     = "t2.medium"
 }
 
 variable "eks_cluster_policy_arn" {
@@ -57,4 +57,10 @@ variable "eks_ecr_read_only_policy_arn" {
   description = "ARN of the ECR read only policy"
   type        = string
   default     = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+variable "eks_lt" {
+description = "Name of the Launch Template"
+type = string
+default = "eks-node-lt"
 }
