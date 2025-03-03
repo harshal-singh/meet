@@ -77,23 +77,51 @@
       debug:
         msg: "Run 'aws configure' manually to set up AWS credentials."
 
-    - name: Download Kubectl from AWS
-      get_url:
-        url: https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl
-        dest: /tmp/kubectl
+    - name: Install Required Dependencies to Install Kubectl 
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+        state: present
+        update_cache: yes
+
+    - name: Create the keyring the directory
+      file: 
+        path: /etc/apt/keyrings
+        state: directory
         mode: '0755'
 
-    - name: Move Kubectl to /usr/local/bin
-      command: mv /tmp/kubectl /usr/local/bin/kubectl
+    - name: Download Kubernetes Repository GPG key
+      get_url:
+        url: https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key
+        dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+        mode: '0644'
 
-    - name: Verify Kubectl Installation
-      command: kubectl version --short --client
+    - name: Add Kubernetes APT Repository
+      copy: 
+        dest: /etc/apt/sources.list.d/kubernetes.list
+        content: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /"
+        mode: '0644'
+
+    - name: Update APT package
+      apt:
+        update_cache: yes
+
+    - name: Install Kubectl
+      apt:
+        name: kubectl
+        state: present
+
+    - name: Verify kubectl installation
+      command: kubectl version --client
       register: kubectl_version
       changed_when: false
 
-    - name: Display Kubectl version
+    - name: Print Kubectl version
       debug:
-        var: kubectl_version.stdout
+        msg: "{{ kubectl_version.stdout }}"
 
     - name: Install Sonar Qube using Docker Container
       docker_container:

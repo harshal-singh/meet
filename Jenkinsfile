@@ -1,6 +1,6 @@
-@Library('shared-library') _
+@Library('Shared') _
 pipeline {
-    agent {label "node"}
+    agent {label 'Node'}
 
     environment {
         SONAR_HOME = tool "sonarqube"
