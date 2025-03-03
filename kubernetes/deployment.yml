@@ -21,7 +21,8 @@ spec:
           ports:
             - containerPort: 5000
           env:
-            - valueFrom:
+            - name: LIVE_DB
+              valueFrom:
                 configMapKeyRef:
                   name: meetapp-config
                   key: LIVE_DB
