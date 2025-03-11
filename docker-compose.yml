@@ -9,11 +9,6 @@ services:
       - mongo_data:/data/db
     ports:
       - "27017:27017"
-    healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
   
   meetapp:
     container_name: meetapp
@@ -24,8 +19,7 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      mongodb:
-        condition: service_healthy
+      - mongodb
 
 volumes:
   mongo_data:

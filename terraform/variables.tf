@@ -58,9 +58,3 @@ variable "eks_ecr_read_only_policy_arn" {
   type        = string
   default     = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
-
-variable "eks_lt" {
-description = "Name of the Launch Template"
-type = string
-default = "eks-node-lt"
-}

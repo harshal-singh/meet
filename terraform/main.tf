@@ -89,8 +89,21 @@ resource "aws_security_group" "eks_worker_sg" {
   }
 
   ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
     from_port = 443
     to_port = 443
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 30000
+    to_port = 32767
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -172,28 +185,11 @@ resource "aws_iam_role_policy_attachment" "eks_ecr_read_only_policy" {
   policy_arn = var.eks_ecr_read_only_policy_arn
 }
 
-resource "aws_launch_template" "eks_node_lt" {
-  name_prefix = var.eks_lt
-  description = "Launch Template for EKS Node Group"
-  image_id = var.ami_id
-  instance_type = var.eks_node_instance_type
-
-  vpc_security_group_ids = [aws_security_group.eks_worker_sg.id]
-
-  tag_specifications {
-    resource_type = "instance"
-    tags = {
-      Name = "eks-node"
-    }
-  }
-}
-
 resource "aws_eks_node_group" "eks_node_group" {
   cluster_name = aws_eks_cluster.eks_cluster.name
   node_group_name = var.eks_node_group_name
   node_role_arn = aws_iam_role.eks_node_role.arn
   subnet_ids = [aws_default_subnet.default_subnet_1.id, aws_default_subnet.default_subnet_2.id]
-
   
   scaling_config {
     desired_size = 2
