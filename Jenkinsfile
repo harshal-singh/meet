@@ -6,6 +6,10 @@ pipeline {
         SONAR_HOME = tool "sonarqube"
     }
 
+    parameters {
+        string(name: 'DOCKER_TAG', defaultValue:'', description: 'Setting Docker image for latest push')
+    }
+
     stages {
         stage('Clean Workspace') {
             steps {
@@ -49,6 +53,28 @@ pipeline {
                     sonarQubeQualityGate()
                 }
             }
+        }
+        stage('Docker: Build Images') {
+            steps {
+                script {
+                    dockerBuild("meet-app", "${params.DOCKER_TAG}")
+                }
+            }
+        }
+        stage('Docker: Tag & Push to Docker Hub') {
+            steps {
+                script {
+                    dockerPush('docker-creds', 'meet-app', "${params.DOCKER_TAG}")
+                }
+            }
+        }
+    }
+    post {
+        success {
+            archiveArtifacts artifacts: '*.xml', followSymlinks: false
+            build job: "Meet-CD", parameters: [
+                string(name: "DOCKER_TAG", value: "${params.DOCKER_TAG}")
+            ]
         }
     }
 }
