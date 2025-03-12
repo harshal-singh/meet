@@ -77,52 +77,23 @@
       debug:
         msg: "Run 'aws configure' manually to set up AWS credentials."
 
-    - name: Install Required Dependencies to Install Kubectl 
-      apt:
-        name:
-          - apt-transport-https
-          - ca-certificates
-          - curl
-          - gnupg
-        state: present
-        update_cache: yes
+    - name: Download Kubectl from AWS
+      get_url:
+        url: https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl
+        dest: /tmp/kubectl
+        mode: '0755'
 
-    - name: Add Kubernetes GPG key
-      shell: |
-        curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-      args:
-        creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    - name: Move Kubectl to /usr/local/bin
+      command: mv /tmp/kubectl /usr/local/bin/kubectl
 
-    - name: Set correct permissions for GPG key
-      file:
-        path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-        mode: '0644'
-
-    - name: Add Kubernetes apt repository
-      shell: |
-        echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
-      args:
-        creates: /etc/apt/sources.list.d/kubernetes.list
-
-    - name: Set correct permissions for repo list
-      file:
-        path: /etc/apt/sources.list.d/kubernetes.list
-        mode: '0644'
-
-    - name: Install Kubectl
-      apt:
-        name: kubectl
-        state: present
-        update_cache: yes
-
-    - name: Verify kubectl installation
-      command: kubectl version --client
+    - name: Verify Kubectl Installation
+      command: kubectl version --short --client
       register: kubectl_version
       changed_when: false
 
-    - name: Print Kubectl version
+    - name: Display Kubectl version
       debug:
-        msg: "{{ kubectl_version.stdout }}"
+        var: kubectl_version.stdout
 
     - name: Install Sonar Qube using Docker Container
       docker_container:
