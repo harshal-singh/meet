@@ -26,6 +26,11 @@ spec:
                 configMapKeyRef:
                   name: meetapp-config
                   key: LIVE_DB
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: meetapp-config
+                  key: PORT
 
 ---
 
