@@ -5,4 +5,4 @@ metadata:
   namespace: meetapp
 data:
   LIVE_DB: mongodb://mongodb-svc:27017/meetapp
-  PORT: 5000
+  PORT: "5000"

@@ -1,15 +1,15 @@
 @Library('Shared') _
 pipeline {
-    agent {label 'Node'}
+    agent { label 'Node' }
     
     parameters {
         string(name: 'DOCKER_TAG', defaultValue: '', description: 'Docker tag of the image built by the CI job')
     }
 
     stages {
-        stage("Workspace cleanup"){
-            steps{
-                script{
+        stage("Workspace cleanup") {
+            steps {
+                script {
                     cleanWs()
                 }
             }
@@ -17,43 +17,42 @@ pipeline {
         
         stage('Git: Code Checkout') {
             steps {
-                script{
-                    code_checkout("https://github.com/rcheeez/meet","dev")
+                script {
+                    gitCheckout("https://github.com/rcheeez/meet", "dev")
                 }
             }
         }
         
         stage('Verify: Docker Image Tag') {
             steps {
-                script{
+                script {
                     echo "DOCKER_TAG: ${params.DOCKER_TAG}"
                 }
             }
         }
         
-        
-        stage("Update: Kubernetes manifests"){
-            steps{
-                script{
-                    dir('kubernetes'){
+        stage("Update: Kubernetes manifests") {
+            steps {
+                script {
+                    dir('kubernetes') {
                         sh """
                             sed -i -e 's|guravarchies/meetapp.*|guravarchies/meetapp:${params.DOCKER_TAG}|g' deployment.yaml
                         """
-                    }                    
+                    }
                 }
             }
         }
         
-        stage("Git: Code update and push to GitHub"){
-            steps{
-                script{
+        stage("Git: Code update and push to GitHub") {
+            steps {
+                script {
                     gitUpdateAndPush("https://github.com/rcheeez/meet", "git-creds")
                 }
             }
         }
     }
-    }
-  post {
+
+    post {
         success {
             script {
                 emailext attachLog: true,
@@ -73,9 +72,9 @@ pipeline {
                         </div>
                     </body>
                     </html>
-            """,
-            to: 'archies.aws@gmail.com',
-            mimeType: 'text/html'
+                """,
+                to: 'archies.aws@gmail.com',
+                mimeType: 'text/html'
             }
         }
     }
