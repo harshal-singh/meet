@@ -109,7 +109,30 @@
         url: https://github.com/argoproj/argo-cd/releases/download/v2.4.7/argocd-linux-amd64
         dest: /usr/local/bin/argocd
         mode: '0755'
+      
+    - name: Install Dependencies for Trivy
+      apt:
+        name:
+          - wget
+          - apt-transport-https
+          - gnupg
+          - lsb-release
+        state: present
+
+    - name: Add Trivy GPG
+      shell: | 
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+
+    - name: Add Trivy Repository
+      shell: |
+        echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+
+    - name: Install Trivy
+      apt:
+        name: trivy
+        state: present
+        update_cache: yes
 
     - name: Print Completetion Message
       debug:
-        msg: "Jenkins, Docker, AWS CLI, kubectl, SonarQube, and ArgoCD have been installed and configured on the AWS Master Node."
+        msg: "Jenkins, Docker, AWS CLI, kubectl, SonarQube, Trivy and ArgoCD have been installed and configured on the AWS Master Node."
