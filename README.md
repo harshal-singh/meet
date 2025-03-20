@@ -23,6 +23,7 @@ Meet is a web-based video conferencing service that allows users to hold real-ti
 In this demo, we will deploy a fully functional Meet application on an AWS EKS (Elastic Kubernetes Service) cluster.
 
 ### **Project Deployment Flow:**
+![project-development-flow](assets/meetapp-devops-flow.drawio.png)
 
 ## Tech Stack Used in this Project
 
