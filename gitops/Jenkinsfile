@@ -1,0 +1,81 @@
+@Library('Shared') _
+pipeline {
+    agent { label 'Node' }
+    
+    parameters {
+        string(name: 'DOCKER_TAG', defaultValue: '', description: 'Docker tag of the image built by the CI job')
+    }
+
+    stages {
+        stage("Workspace cleanup") {
+            steps {
+                script {
+                    cleanWs()
+                }
+            }
+        }
+        
+        stage('Git: Code Checkout') {
+            steps {
+                script {
+                    gitCheckout("https://github.com/rcheeez/meet", "dev")
+                }
+            }
+        }
+        
+        stage('Verify: Docker Image Tag') {
+            steps {
+                script {
+                    echo "DOCKER_TAG: ${params.DOCKER_TAG}"
+                }
+            }
+        }
+        
+        stage("Update: Kubernetes manifests") {
+            steps {
+                script {
+                    dir('kubernetes') {
+                        sh """
+                            sed -i -e 's|guravarchies/meet-app.*|guravarchies/meet-app:${params.DOCKER_TAG}|g' deployment.yml
+                        """
+                    }
+                }
+            }
+        }
+        
+        stage("Git: Code update and push to GitHub") {
+            steps {
+                script {
+                    gitUpdateAndPush("https://github.com/rcheeez/meet", "git-creds")
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                emailext attachLog: true,
+                from: 'archiesgurav10@gmail.com',
+                subject: "Wanderlust Application has been updated and deployed - '${currentBuild.result}'",
+                body: """
+                    <html>
+                    <body>
+                        <div style="background-color: #FFA07A; padding: 10px; margin-bottom: 10px;">
+                            <p style="color: black; font-weight: bold;">Project: ${env.JOB_NAME}</p>
+                        </div>
+                        <div style="background-color: #90EE90; padding: 10px; margin-bottom: 10px;">
+                            <p style="color: black; font-weight: bold;">Build Number: ${env.BUILD_NUMBER}</p>
+                        </div>
+                        <div style="background-color: #87CEEB; padding: 10px; margin-bottom: 10px;">
+                            <p style="color: black; font-weight: bold;">URL: ${env.BUILD_URL}</p>
+                        </div>
+                    </body>
+                    </html>
+                """,
+                to: 'archies.aws@gmail.com',
+                mimeType: 'text/html'
+            }
+        }
+    }
+}
