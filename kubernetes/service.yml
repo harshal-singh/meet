@@ -1,0 +1,28 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: meetapp-svc
+  namespace: meetapp
+spec:
+  type: NodePort
+  selector:
+    app: meet
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mongodb-svc
+  namespace: meetapp
+spec:
+  clusterIP: None
+  selector:
+    app: mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
