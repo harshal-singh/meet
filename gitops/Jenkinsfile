@@ -36,7 +36,7 @@ pipeline {
                 script {
                     dir('kubernetes') {
                         sh """
-                            sed -i -e 's|guravarchies/meet-app:*|guravarchies/meet-app:${params.DOCKER_TAG}|g' deployment.yaml
+                            sed -i -e 's|guravarchies/meet-app:*|guravarchies/meet-app:${params.DOCKER_TAG}|g' deployment.yml
                         """
                     }
                 }
