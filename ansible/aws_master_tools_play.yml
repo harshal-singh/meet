@@ -1,6 +1,6 @@
 - 
   name: Install and configure Jenkins, Docker, AWS CLI, kubectl, SonarQube, and ArgoCD on AWS Master Node
-  hosts: aws_master
+  hosts: master
   become: yes
   tasks: 
     - name: Update Apt Cache

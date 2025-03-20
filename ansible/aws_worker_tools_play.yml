@@ -1,6 +1,6 @@
 -
   name: Install and Configure Java, Docker, AWS CLI, and Trivy on worker instances
-  hosts: aws_worker
+  hosts: agent
   become: yes
   tasks: 
     - name: Update Apt Cache
