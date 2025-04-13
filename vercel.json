@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "rewrite": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/"
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }
