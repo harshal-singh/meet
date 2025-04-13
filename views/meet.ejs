@@ -1,81 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="theme-color" content="#2f80ed" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Meet</title>
-        <link rel="stylesheet" href="/css/style.css" />
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-        <link rel="shortcut icon" href="/icons/favicon.png" type="image/x-icon" />
-    </head>
-    <body>
-        <div id="popup-layer">
-            <div id="popup-msg"></div>
-        </div>
-        <main>
-            <nav>
-                <a id="logo" href="/">
-                    <button class="material-icons">videocam</button>
-                    <span>Meet</span>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#2563eb" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MeetSpace</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="shortcut icon" href="/icons/favicon.png" type="image/x-icon" />
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <div class="logo-icon">
+                        <span class="material-icons">videocam</span>
+                    </div>
+                    <span class="logo-text">MeetSpace</span>
                 </a>
-            </nav>
-            <section id="left-box">
-                <div id="videos-grid"></div>
-                <p class="my-controls">
-                    <button id="mic" class="material-icons active">mic</button>
-                    <button id="videocam" class="material-icons active">videocam</button>
-                    <button id="call_end" class="material-icons">call_end</button>
-                </p>
-            </section>
-            <section id="participant">
-                <h4>Participant</h4>
-                <div id="participant-list"></div>
-            </section>
-            <section id="chat-area">
-                <h4>Meet Chats</h4>
-                <div id="chats"></div>
-                <form>
-                    <input type="text" id="chat-msg" placeholder="Type your message here..." />
-                    <button id="send-msg" class="material-icons">send</button>
-                </form>
-            </section>
-            <div id="options">
-                <button id="code" class="material-icons">content_copy</button>
-                <button id="link" class="material-icons">link</button>
-                <button id="people" class="material-icons">people</button>
-                <button id="chat_bubble" class="material-icons">chat_bubble</button>
-            </div>
-            <footer>
-                <small>Copyright © 2021 Meet.</small>
-                <small>Designed & Developed by Harshal Singh.</small>
-            </footer>
-        </main>
-
-        <div id="overlay">
-            <div>
-                <video id="preview-stream"></video>
-                <form>
-                    <input
-                        autocomplete="off"
-                        type="text"
-                        id="username"
-                        placeholder="Enter your name here"
-                        autocomplete="username"
-                    />
-                    <button id="join-meet">Join Meet</button>
-                </form>
             </div>
         </div>
+    </header>
+    <div id="popup-layer">
+        <div id="popup-msg"></div>
+    </div>
+    <main>
+        <nav>
+            <a id="logo" href="/">
+                <button class="material-icons">videocam</button>
+                <span>Meet</span>
+            </a>
+        </nav>
+        <section id="left-box">
+            <div id="videos-grid"></div>
+        </section>
+        <section id="participant">
+            <h4>Participants</h4>
+            <div id="participant-list"></div>
+            <button id="close-participant" class="material-icons close-btn">close</button>
+        </section>
+        <section id="chat-area">
+            <h4>Meet Chats</h4>
+            <div id="chats"></div>
+            <form>
+                <input type="text" id="chat-msg" placeholder="Type your message here..." />
+                <button id="send-msg" class="material-icons">send</button>
+            </form>
+            <button id="close-chat-area" class="material-icons close-btn">close</button>
+        </section>
+        <div id="options">
+            <button id="code" class="material-icons">content_copy</button>
+            <button id="link" class="material-icons">link</button>
+            <button id="people" class="material-icons">people</button>
+            <button id="chat_bubble" class="material-icons">chat_bubble</button>
+        </div>
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="copyright">© 2025 MeetSpace. All rights reserved.</div>
+                    <div class="copyright">Designed & Developed by Harshal Singh</div>
+                </div>
+            </div>
+        </footer>
+    </main>
 
-        <!-- script -->
-        <script>
-            const ROOM_ID = "<%= roomId %>";
-        </script>
-        <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script>
-        <script src="/socket.io/socket.io.js" defer></script>
-        <script src="/js/client.js" defer></script>
-        <script src="/js/script.js" defer></script>
-    </body>
+    <div id="overlay">
+        <div>
+            <video id="preview-stream"></video>
+            <!-- <form> -->
+
+            <input autocomplete="off" type="text" id="username" placeholder="Enter your name here"
+                autocomplete="username" />
+            <span id="name-error">Name is required</span>
+            <button id="join-meet">Join Meet</button>
+            <!-- </form> -->
+        </div>
+    </div>
+
+    <div class="my-controls">
+        <button id="mic" class="material-icons active">mic</button>
+        <button id="videocam" class="material-icons active">videocam</button>
+        <button id="call_end" class="material-icons">call_end</button>
+    </div>
+
+    <!-- script -->
+    <script>
+        const ROOM_ID = "<%= roomId %>";
+    </script>
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="/js/client.js" defer></script>
+    <script src="/js/script.js" defer></script>
+</body>
+
 </html>
